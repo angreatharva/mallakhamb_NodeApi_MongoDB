@@ -37,6 +37,6 @@ userSchema.pre("save",async function(){
 });
 
 
-const UserModel = db.model('user',userSchema);
+const UserModel = db.model('judges',userSchema);
 
 module.exports = UserModel;

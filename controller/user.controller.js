@@ -8,7 +8,7 @@ exports.registerJudges = async(req,res,next)=>{
 
         const successRes = await UserService.registerJudges(email,password,isSuperior);
 
-        res.json({status:true,message:"Registered Successfully.!"});
+        res.json({status:true,message:"Registered Judge Successfully.!"});
 
     }
     catch(e){
