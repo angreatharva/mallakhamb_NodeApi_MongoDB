@@ -25,7 +25,9 @@ const teamSchema = new Schema({
     },
     under12: {
         type: [playerSchema], // Define an array of objects based on playerSchema
-        required: true
+    },
+    under14: {
+        type: [playerSchema], // Define an array of objects based on playerSchema
     }
 });
 
@@ -41,7 +43,7 @@ const saveData = async () => {
             {
                 playerName: "Atharva",
                 DOB: "08/09/2002"
-            },
+            }
            
         ]
     };
@@ -55,4 +57,4 @@ const saveData = async () => {
     }
 };
 
- saveData();
+//   saveData();

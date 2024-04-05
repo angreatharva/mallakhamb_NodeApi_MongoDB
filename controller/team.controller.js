@@ -1,10 +1,13 @@
+const TeamModel = require('../model/team.model');
 const TeamService = require('../services/team.services');
 
 exports.registerTeam = async(req,res,next)=>{
     try{
-        const {teamName,mobileNo} = req.body ;
+    
+        // console.log(req.body);
 
-        const successRes = await TeamService.registerTeam(teamName,mobileNo);
+        const successRes = await TeamService.registerTeam(req.body);
+        console.log(successRes);
 
         res.json({status:true,message:"Registered Team Successfully.!"});
 

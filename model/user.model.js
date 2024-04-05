@@ -40,3 +40,22 @@ userSchema.pre("save",async function(){
 const UserModel = db.model('judges',userSchema);
 
 module.exports = UserModel;
+
+// Assuming you are saving the data like this
+const saveData = async () => {
+    const data = {
+        "email":"abcdefg@gmail.com",
+        "password":"abcdefg",
+        "isSuperior":true
+    };
+
+    try {
+        const newUser = new UserModel(data);
+        await newUser.save();
+        console.log("Data saved successfully");
+    } catch (error) {
+        console.error("Error saving data:", error);
+    }
+};
+
+//  saveData();

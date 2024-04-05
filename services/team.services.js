@@ -2,9 +2,9 @@ const teamModel = require('../model/team.model')
 
 class TeamService{
 
-    static async registerTeam(teamName,mobileNo){
+    static async registerTeam(data){
         try{
-            const createTeam = new teamModel({teamName,mobileNo});
+            const createTeam = new teamModel(data);
             return await createTeam.save();
         }
         catch(e){
