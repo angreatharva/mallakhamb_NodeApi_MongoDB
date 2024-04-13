@@ -1,4 +1,3 @@
-const TeamModel = require('../model/team.model');
 const TeamService = require('../services/team.services');
 
 exports.registerTeam = async(req,res,next)=>{
