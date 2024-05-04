@@ -1,16 +1,18 @@
-const express=require("express");
+const express = require("express");
 const bodyParser = require("body-parser");
-const userRouter = require('./routers/user.route');
-const teamRouter =require('./routers/team.route')
+const cors = require("cors"); // <-- Add this line
+const userRouter = require("./routers/user.route");
+const teamRouter = require("./routers/team.route");
 
-const app= express(); 
+const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/',userRouter);
+// Add CORS middleware
+app.use(cors());
 
-app.use('/',teamRouter);
-
-
+// Routes
+app.use("/", userRouter);
+app.use("/", teamRouter);
 
 module.exports = app;

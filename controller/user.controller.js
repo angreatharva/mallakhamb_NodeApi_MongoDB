@@ -1,43 +1,48 @@
+const UserService = require("../services/user.services");
 
+exports.registerJudges = async (req, res, next) => {
+  try {
+    const { username, password, isSuperior } = req.body;
 
-const UserService = require('../services/user.services');
-
-exports.registerJudges = async(req,res,next)=>{
-    try{
-        const {email,password,isSuperior} = req.body ;
-
-        const successRes = await UserService.registerJudges(email,password,isSuperior);
-
-        res.json({status:true,message:"Registered Judge Successfully.!"});
-
+    // Make sure username is provided
+    if (!username) {
+      throw new Error("Username is required");
     }
-    catch(e){
-        throw e;
+
+    const successRes = await UserService.registerJudges(
+      username,
+      password,
+      isSuperior
+    );
+
+    res.json({ status: true, message: "Registered Judge Successfully.!" });
+  } catch (e) {
+    next(e); // Pass the error to the error handling middleware
+  }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { username, password, isSuperior } = req.body;
+
+    const user = await UserService.checkUser(username);
+    if (!user) {
+      throw new Error("User does not Exist");
     }
-}
+    const isMatch = await user.comparePassword(password);
 
-exports.login = async(req,res,next)=>{
-    try{
-        const {email,password,isSuperior} = req.body ;
-
-        const user = await UserService.checkUser(email);
-        if(!user){
-            throw new Error("User does not Exists");
-        }
-        const isMatch = await user.comparePassword(password);
-
-        if(isMatch == false){
-            throw new Error('Password is Invalid');
-        }
-
-        let tokenData = {_id:user._id,email:user.email};
-
-        const token = await UserService.generateToken(tokenData,"secretKey",'1h');
-
-        res.status(200).json({status:true, token:token});
-
+    if (!isMatch) {
+      throw new Error("Password is Invalid");
     }
-    catch(e){
-        throw e;
-    }
-}
+
+    let tokenData = { _id: user._id, username: user.username };
+
+    const token = await UserService.generateToken(tokenData, "secretKey", "1h");
+
+    res
+      .status(200)
+      .json({ status: true, token: token, username: user.username });
+  } catch (e) {
+    next(e); // Pass the error to the error handling middleware
+  }
+};

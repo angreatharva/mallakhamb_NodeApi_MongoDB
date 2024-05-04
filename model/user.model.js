@@ -1,73 +1,48 @@
-const db = require('../config/db');
+const db = require("../config/db");
 const bcrypt = require("bcrypt");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    email:{
-        type:String,
-        lowercase:true,
-        required:true,
-        unique:true,
-    },
-    password:{
-        type:String,
-        required:true,
-    },
-    isSuperior:{
-        type:Boolean,
-        required:true
-    }
-    
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isSuperior: {
+    type: Boolean,
+    required: true,
+  },
 });
-
-
 
 // used while encrypting user entered password
-userSchema.pre("save",async function(){
-    var user = this;
-    if(!user.isModified("password")){
-        return
-    }
-    try{
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(user.password,salt);
-        user.password = hash;
-    }catch(err){
-        throw err;
-    }
+userSchema.pre("save", async function () {
+  var user = this;
+  if (!user.isModified("password")) {
+    return;
+  }
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(user.password, salt);
+    user.password = hash;
+  } catch (err) {
+    throw err;
+  }
 });
 
-userSchema.methods.comparePassword = async function(userPassword){
-    try{
-        const isMatch = await bcrypt.compare(userPassword,this.password);
-        return isMatch;
-    }
-    catch(e){
-        throw e;
-    }
-}
-
-
-const UserModel = db.model('judges',userSchema);
-
-module.exports = UserModel;
-
-// Assuming you are saving the data like this
-const saveData = async () => {
-    const data = {
-        "email":"abcdefg@gmail.com",
-        "password":"abcdefg",
-        "isSuperior":true
-    };
-
-    try {
-        const newUser = new UserModel(data);
-        await newUser.save();
-        console.log("Data saved successfully");
-    } catch (error) {
-        console.error("Error saving data:", error);
-    }
+userSchema.methods.comparePassword = async function (userPassword) {
+  try {
+    const isMatch = await bcrypt.compare(userPassword, this.password);
+    return isMatch;
+  } catch (e) {
+    throw e;
+  }
 };
 
-//  saveData();
+const UserModel = db.model("judges", userSchema);
+
+module.exports = UserModel;
