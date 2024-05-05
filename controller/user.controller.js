@@ -2,7 +2,8 @@ const UserService = require("../services/user.services");
 
 exports.registerJudges = async (req, res, next) => {
   try {
-    const { username, password, isSuperior } = req.body;
+    const { username, password, isSuperior, judge, ageGroup, gender } =
+      req.body;
 
     // Make sure username is provided
     if (!username) {
@@ -12,10 +13,18 @@ exports.registerJudges = async (req, res, next) => {
     const successRes = await UserService.registerJudges(
       username,
       password,
-      isSuperior
+      judge,
+      ageGroup,
+      gender
     );
 
-    res.json({ status: true, message: "Registered Judge Successfully.!" });
+    res.json({
+      status: true,
+      message: "Registered Judge Successfully.!",
+      username: username,
+      judge: judge,
+      ageGroup: ageGroup,
+    });
   } catch (e) {
     next(e); // Pass the error to the error handling middleware
   }

@@ -13,8 +13,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  isSuperior: {
-    type: Boolean,
+  judge: {
+    type: String,
+    required: true,
+  },
+  ageGroup: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
     required: true,
   },
 });
